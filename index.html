@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>동영상 캡쳐 + 이미지 세로 합치기</title>
+    <meta property="og:title" content="동영상 캡쳐 + 이미지 세로 합치기" />
+    <meta property="og:type" content="website" />
+    <!-- <meta property="og:url" content="" />
+    <meta property="og:image" content=""/> -->
+  </head>
+  <body>
+    <header>
+      <h1>동영상 캡쳐 + 이미지 세로 합치기</h1>
+    </header>
+    <main>
+      <section>
+        <video controls id="video-player">
+          <source id="video-id" />
+        </video>
+        <input id="load-video" type="file" accept="video/*" />
+        <button>캡쳐</button>
+        <span>가로 사이즈</span><input type="number" min="320" max="800" />
+        <button>다운로드</button>
+      </section>
+      <aside>
+        <div id="capture">
+          <div class="capture__box" draggable="true">
+            <span class="capture__number">1</span>
+            <img
+              class="capture__image"
+              src="https://testcreative.co.uk/wp-content/uploads/2018/08/Test-Twitter-Icon.jpg"
+            />
+          </div>
+        </div>
+      </aside>
+    </main>
+    <script src="src/main.js" defer></script>
+  </body>
+</html>
