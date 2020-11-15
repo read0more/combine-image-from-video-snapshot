@@ -1,0 +1,171 @@
+:root {
+  --color-main: #45b6fe;
+
+  --weight-bold: 700;
+  --weight-semi-bold: 500;
+  --weight-regular: 400;
+
+  --button-pading: 8px;
+  --input-border: 1px solid silver;
+  --radius: 4px;
+
+  --font-micro: 14px;
+}
+
+::-webkit-scrollbar {
+  width: 15px;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 8px;
+  background-color: white;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #323232;
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #5a5a5a;
+  opacity: 0.3;
+}
+
+body {
+  padding: 0;
+  font-family: "Roboto", sans-serif;
+  font-weight: var(--weight-regular);
+  background: url("../img/background.png");
+}
+
+button {
+  border: none;
+  outline: none;
+  cursor: pointer;
+  background-color: silver;
+  padding: var(--button-pading);
+  border-radius: var(--radius);
+  font-weight: var(--weight-bold);
+  font-size: var(--font-micro);
+}
+
+h2,
+h3 {
+  margin: 0;
+}
+
+.container {
+  width: 1200px;
+  height: 80vh;
+  padding: 20px;
+  border-radius: var(--radius);
+  -webkit-box-shadow: 5px 2px 14px 1px rgba(0, 0, 0, 0.66);
+  box-shadow: 5px 2px 14px 1px rgba(0, 0, 0, 0.66);
+  margin: 40px auto;
+  background-color: whitesmoke;
+}
+
+header {
+  margin-bottom: 20px;
+}
+
+main {
+  display: flex;
+  align-content: flex-start;
+}
+
+.title {
+  margin-bottom: 10px;
+}
+
+.alert-message {
+  font-weight: 500;
+}
+
+/* section */
+section {
+  flex-grow: 2;
+  margin-right: 50px;
+  flex-basis: 0px;
+}
+
+#video-player {
+  display: block;
+  width: 100%;
+}
+
+.load-video-block {
+  margin: 20px 0;
+}
+
+.load-video-block label {
+  padding: 8px;
+  margin-left: 20px;
+  border-radius: var(--radius);
+  font-weight: var(--weight-bold);
+  cursor: pointer;
+  background-color: silver;
+  font-size: var(--font-micro);
+}
+
+.filename {
+  appearance: none;
+  border-radius: var(--radius);
+  border: var(--input-border);
+  padding: var(--button-pading);
+}
+
+#load-video {
+  display: none;
+}
+
+.capture-btn {
+  width: 100%;
+}
+
+/* aside */
+aside {
+  flex-grow: 1;
+  flex-basis: 0px;
+  overflow-y: scroll;
+  height: 600px;
+}
+
+.download-form {
+  margin-bottom: 20px;
+}
+
+.download-form span {
+  font-weight: 700;
+  margin-right: 20px;
+}
+
+.download-form input {
+  width: 50%;
+  margin-right: 5px;
+  padding: 8px 0;
+  border: var(--input-border);
+  border-radius: var(--radius);
+}
+
+#capture-list {
+  margin-right: 10px;
+}
+
+.capture {
+  background-color: white;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 7px;
+}
+
+.capture__image {
+  border-radius: var(--radius);
+  width: 160px;
+  height: 120px;
+}
+
+.capture__number {
+  vertical-align: top;
+  margin-left: 10px;
+}
