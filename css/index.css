@@ -121,14 +121,17 @@ section {
 
 .capture-btn {
   width: 100%;
+  cursor: not-allowed;
+}
+
+.capture-btn.active {
+  cursor: pointer;
 }
 
 /* aside */
 aside {
   flex-grow: 1;
   flex-basis: 0px;
-  overflow-y: scroll;
-  height: 600px;
 }
 
 .download-form {
@@ -137,35 +140,72 @@ aside {
 
 .download-form span {
   font-weight: 700;
+}
+
+.download-form select {
   margin-right: 20px;
 }
 
-.download-form input {
-  width: 50%;
-  margin-right: 5px;
-  padding: 8px 0;
-  border: var(--input-border);
-  border-radius: var(--radius);
+.download-form .after-delete {
+  margin-top: 10px;
 }
 
 #capture-list {
-  margin-right: 10px;
+  padding-right: 10px;
+  overflow-y: scroll;
+  height: 500px;
 }
 
 .capture {
+  position: relative;
   background-color: white;
   padding: 15px;
   margin-bottom: 15px;
   border-radius: 7px;
 }
 
+.capture.active {
+  border: 5px solid #1e2021;
+}
+
 .capture__image {
   border-radius: var(--radius);
-  width: 160px;
-  height: 120px;
+  /* width, height는 template.js에 인라인으로 constants.js에서 받아 사용 */
 }
 
 .capture__number {
-  vertical-align: top;
-  margin-left: 10px;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 23px;
+  height: 23px;
+  font-size: var(--font-micro);
+  border-radius: 50%;
+  background-color: gold;
+}
+
+.capture.active .capture__number {
+  display: flex;
+}
+
+.capture__time {
+  vertical-align: middle;
+}
+
+.capture__icons {
+  top: 5px;
+  position: absolute;
+  right: 20px;
+}
+
+.capture__icons i {
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+.capture__icons i:hover {
+  opacity: 0.5;
 }
