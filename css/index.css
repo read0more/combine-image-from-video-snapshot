@@ -144,6 +144,8 @@ section {
 
 /* aside */
 aside {
+  flex-direction: column;
+  display: flex;
   flex-grow: 1;
   flex-basis: 0px;
   max-height: 600px;
