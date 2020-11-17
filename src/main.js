@@ -221,10 +221,11 @@ function submitForm() {
       downloadResult(dataURL);
       videoPlayer.currentTime = previousTime;
 
-      if (event.target.querySelector("input").checked) {
+      if (event.target.querySelector(".after-delete input").checked) {
         removeCaptureElements(
           ...captureList.querySelectorAll(".capture.active")
         );
+        arrangeAside(getCaptureCount());
       }
     });
   });
