@@ -123,11 +123,11 @@ section {
 
 .capture-btn {
   width: 100%;
-  cursor: not-allowed;
+  cursor: pointer;
 }
 
-.capture-btn.active {
-  cursor: pointer;
+.capture-btn.disable {
+  cursor: not-allowed;
 }
 
 /* aside */
@@ -152,6 +152,10 @@ aside {
   margin-top: 10px;
 }
 
+.download-form__submit.disable {
+  cursor: not-allowed;
+}
+
 #capture-list {
   padding-right: 10px;
   overflow-y: scroll;
@@ -164,6 +168,12 @@ aside {
   padding: 15px;
   margin-bottom: 15px;
   border-radius: 7px;
+  cursor: grab;
+}
+
+/* gu-mirror: dragula 드래그 할 때 나오는 박스의 클래스 명 */
+.capture.gu-mirror {
+  cursor: grabbing;
 }
 
 .capture.active {

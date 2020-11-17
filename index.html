@@ -17,14 +17,20 @@
       rel="stylesheet"
     />
     <link href="css/index.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/dom-autoscroller@2.3.4/dist/dom-autoscroller.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dragula/3.7.3/dragula.min.js"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/dragula/3.7.2/dragula.min.css"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <div class="container">
       <header>
         <h2 class="title">동영상 캡쳐 + 이미지 세로 합치기</h2>
+        <h3 class="alert-message">합칠 이미지 개수의 범위는 2~10 입니다</h3>
         <h3 class="alert-message">
-          합쳐지는 이미지는 오른쪽 리스트의 상위 10장까지이며, 가로 폭은
-          320~800까지 가능합니다.
+          캡쳐 개수가 설정한 값보다 적을 경우에는 캡쳐한 만큼만 합쳐집니다.
         </h3>
       </header>
       <main>
@@ -37,7 +43,7 @@
             <label for="load-video">동영상 선택</label>
             <input id="load-video" type="file" accept="video/*" />
           </div>
-          <button class="capture-btn">캡쳐</button>
+          <button class="capture-btn disable">캡쳐</button>
         </section>
         <aside>
           <form class="download-form">
@@ -48,7 +54,16 @@
               <option value="800x480">800x480</option>
               <option value="960x640">960x640</option>
             </select>
-            <button>다운로드</button>
+            <button class="download-form__submit disable">다운로드</button
+            ><br />
+            <span>합칠 이미지 개수</span>
+            <input
+              type="number"
+              class="capture__count"
+              value="10"
+              min="2"
+              max="10"
+            />
             <div class="after-delete">
               <span>다운로드 후 다운로드한 캡쳐 삭제</span>
               <input type="checkbox" />

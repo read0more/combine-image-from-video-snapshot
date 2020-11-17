@@ -1,3 +1,4 @@
+// import dragula from "dragula";
 import { captureTemplate } from "./utils/templates.js";
 import {
   CAPTURE_THUMBNAIL_WIDTH,
@@ -5,6 +6,7 @@ import {
   CAPTURE_LIMIT,
 } from "./utils/constants.js";
 
+let combineCaptureCount = CAPTURE_LIMIT;
 const videoPlayer = document.querySelector("#video-player");
 const captureBtn = document.querySelector(".capture-btn");
 const captureList = document.querySelector("#capture-list");
@@ -21,11 +23,29 @@ async function processCapture(captureFunction) {
   const loadingContainer = document.querySelector(".loading-container");
   loadingContainer.classList.add("active");
   const priviousPaused = videoPlayer.paused;
+  videoPlayer.pause();
 
   await captureFunction();
 
   priviousPaused || videoPlayer.play();
   loadingContainer.classList.remove("active");
+}
+
+function onChangeCombineCaptureCount() {
+  const captureCount = document.querySelector(".capture__count");
+  captureCount.addEventListener("change", ({ target }) => {
+    const newValue = Number(target.value);
+    if (newValue < target.min) {
+      target.value = target.min;
+    } else if (target.max < newValue) {
+      target.value = target.max;
+    }
+
+    if (combineCaptureCount !== newValue) {
+      combineCaptureCount = newValue;
+      arrangeAside(getCaptureCount());
+    }
+  });
 }
 
 function onLoadVideo() {
@@ -39,17 +59,20 @@ function onLoadVideo() {
 
     filenameInput.value = filename;
     videoId.setAttribute("src", URL.createObjectURL(loadedVideo));
+    captureList
+      .querySelectorAll(".capture")
+      .forEach((capture) => capture.remove());
     videoPlayer.load();
   });
 
   videoPlayer.addEventListener("loadeddata", () => {
-    captureBtn.classList.add("active");
+    captureBtn.classList.remove("disable");
   });
 }
 
 function orderActiveCapture(captureCount) {
   let currentNumber =
-    captureCount < CAPTURE_LIMIT ? captureCount : CAPTURE_LIMIT;
+    captureCount < combineCaptureCount ? captureCount : combineCaptureCount;
 
   for (let capture of captureList.querySelectorAll(".capture")) {
     const captureNumber = capture.querySelector(".capture__number");
@@ -64,16 +87,25 @@ function orderActiveCapture(captureCount) {
   }
 }
 
+function arrangeAside(captureCount) {
+  orderActiveCapture(captureCount);
+  if (0 < captureCount) {
+    document
+      .querySelector(".download-form__submit")
+      .classList.remove("disable");
+  }
+}
+
 function onClickCaptureButton() {
   captureBtn.addEventListener("click", (event) => {
-    if (!event.target.classList.contains("active")) {
+    if (event.target.classList.contains("disable")) {
       return;
     }
 
     processCapture(() => {
       const captureCount = getCaptureCount() + 1;
       const captureNumber =
-        captureCount < CAPTURE_LIMIT ? captureCount : CAPTURE_LIMIT;
+        captureCount < combineCaptureCount ? captureCount : combineCaptureCount;
       const newCapture = captureTemplate(
         captureNumber,
         videoPlayer.currentTime
@@ -81,9 +113,8 @@ function onClickCaptureButton() {
 
       captureList.innerHTML = newCapture + captureList.innerHTML;
       const captureImage = captureList.querySelector(".capture__image");
-      orderActiveCapture(captureCount);
+      arrangeAside(captureCount);
 
-      videoPlayer.pause();
       context.drawImage(
         videoPlayer,
         0,
@@ -130,7 +161,7 @@ function onClickCaptureIcon() {
       captureCount -= 1;
     }
 
-    orderActiveCapture(captureCount);
+    arrangeAside(captureCount);
   });
 }
 
@@ -154,9 +185,8 @@ async function combineImages(width, height) {
 
   for await (let activeCapture of activeCaptureList) {
     await new Promise((resolve) => {
-      videoPlayer.currentTime = activeCapture.dataset.capturedTime;
       videoPlayer.addEventListener(
-        "timeupdate",
+        "seeked",
         () => {
           resultContext.drawImage(videoPlayer, 0, currentHeight, width, height);
           currentHeight += height;
@@ -164,6 +194,7 @@ async function combineImages(width, height) {
         },
         { once: true }
       );
+      videoPlayer.currentTime = activeCapture.dataset.capturedTime;
     });
   }
 
@@ -186,7 +217,6 @@ function submitForm() {
         .querySelector(".resolution")
         .value.split("x");
 
-      videoPlayer.pause();
       const dataURL = await combineImages(width, height);
       downloadResult(dataURL);
       videoPlayer.currentTime = previousTime;
@@ -200,11 +230,28 @@ function submitForm() {
   });
 }
 
+function activeCaptureDraggable() {
+  const drake = window.dragula([document.querySelector("#capture-list")], {
+    mirrorContainer: document.querySelector("#capture-list"),
+  });
+  drake.on("dragend", () => arrangeAside(getCaptureCount()));
+
+  window.autoScroll([window, document.querySelector("#capture-list")], {
+    maxSpeed: 20,
+    margin: 20,
+    autoScroll: function () {
+      return this.down && drake.dragging;
+    },
+  });
+}
+
 function init() {
+  onChangeCombineCaptureCount();
   onLoadVideo();
   onClickCaptureButton();
   onClickCaptureIcon();
   submitForm();
+  activeCaptureDraggable();
 }
 
 init();
