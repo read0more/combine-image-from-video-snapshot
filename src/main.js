@@ -176,7 +176,8 @@ async function combineImages(width, height) {
   width = Number(width);
   height = Number(height);
 
-  const activeCaptureList = captureList.querySelectorAll(".capture.active");
+  let activeCaptureList = captureList.querySelectorAll(".capture.active");
+  activeCaptureList = Array.from(activeCaptureList).reverse();
   const resultCanvas = document.createElement("canvas");
   const resultContext = resultCanvas.getContext("2d");
   let currentHeight = 0;
