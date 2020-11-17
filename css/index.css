@@ -1,8 +1,6 @@
 @import "./loading.css";
 
 :root {
-  --color-main: #45b6fe;
-
   --weight-bold: 700;
   --weight-semi-bold: 500;
   --weight-regular: 400;
@@ -33,6 +31,10 @@
   opacity: 0.3;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 body {
   padding: 0;
   font-family: "Roboto", sans-serif;
@@ -51,13 +53,23 @@ button {
   font-size: var(--font-micro);
 }
 
-h2,
-h3 {
+h1,
+h2 {
   margin: 0;
 }
 
+h1 {
+  font-weight: var(--weight-bold);
+}
+
+h2 {
+  font-weight: var(--weight-bold);
+  font-size: var(--font-micro);
+}
+
 .container {
-  width: 1200px;
+  overflow: hidden;
+  max-width: 1200px;
   height: 80vh;
   padding: 20px;
   border-radius: var(--radius);
@@ -65,10 +77,6 @@ h3 {
   box-shadow: 5px 2px 14px 1px rgba(0, 0, 0, 0.66);
   margin: 40px auto;
   background-color: whitesmoke;
-}
-
-header {
-  margin-bottom: 20px;
 }
 
 main {
@@ -80,20 +88,19 @@ main {
   margin-bottom: 10px;
 }
 
-.alert-message {
-  font-weight: 500;
-}
-
 /* section */
 section {
   flex-grow: 2;
   margin-right: 50px;
   flex-basis: 0px;
+  height: 100%;
 }
 
 #video-player {
   display: block;
   width: 100%;
+  height: 70%;
+  margin-top: 20px;
 }
 
 .load-video-block {
@@ -134,6 +141,7 @@ section {
 aside {
   flex-grow: 1;
   flex-basis: 0px;
+  max-height: 700px;
 }
 
 .download-form {
@@ -159,7 +167,7 @@ aside {
 #capture-list {
   padding-right: 10px;
   overflow-y: scroll;
-  height: 500px;
+  max-height: 70%;
 }
 
 .capture {
@@ -220,4 +228,40 @@ aside {
 
 .capture__icons i:hover {
   opacity: 0.5;
+}
+
+@media screen and (max-width: 960px) {
+  main {
+    flex-direction: column;
+  }
+
+  .container {
+    height: auto;
+  }
+
+  .filename {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .load-video-block label {
+    display: block;
+    margin-left: 0;
+    text-align: center;
+  }
+
+  aside {
+    max-height: none;
+  }
+
+  .capture-btn {
+    margin-bottom: 20px;
+  }
+
+  #capture-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 5px;
+    overflow-y: auto;
+  }
 }

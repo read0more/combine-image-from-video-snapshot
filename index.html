@@ -26,15 +26,13 @@
   </head>
   <body>
     <div class="container">
-      <header>
-        <h2 class="title">동영상 캡쳐 + 이미지 세로 합치기</h2>
-        <h3 class="alert-message">합칠 이미지 개수의 범위는 2~10 입니다</h3>
-        <h3 class="alert-message">
-          캡쳐 개수가 설정한 값보다 적을 경우에는 캡쳐한 만큼만 합쳐집니다.
-        </h3>
-      </header>
       <main>
         <section>
+          <h1 class="title">동영상 캡쳐 + 이미지 세로 합치기</h1>
+          <h2 class="alert-message">합칠 이미지 개수의 범위는 2~10 입니다.</h2>
+          <h2 class="alert-message">
+            캡쳐 개수가 설정한 값보다 적을 경우에는 캡쳐한 만큼만 합쳐집니다.
+          </h2>
           <video controls id="video-player">
             <source id="video-id" />
           </video>
@@ -53,6 +51,7 @@
               <option value="640x480">640x480</option>
               <option value="800x480">800x480</option>
               <option value="960x640">960x640</option>
+              <option value="1024x600">1024x600</option>
             </select>
             <button class="download-form__submit disable">다운로드</button
             ><br />
