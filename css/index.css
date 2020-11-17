@@ -70,7 +70,7 @@ h2 {
 .container {
   overflow: hidden;
   max-width: 1200px;
-  height: 80vh;
+  height: 100%;
   padding: 20px;
   border-radius: var(--radius);
   -webkit-box-shadow: 5px 2px 14px 1px rgba(0, 0, 0, 0.66);
@@ -105,6 +105,8 @@ section {
 
 .load-video-block {
   margin: 20px 0;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .load-video-block label {
@@ -115,6 +117,8 @@ section {
   cursor: pointer;
   background-color: silver;
   font-size: var(--font-micro);
+  flex-shrink: 1;
+  word-break: keep-all;
 }
 
 .filename {
@@ -122,6 +126,7 @@ section {
   border-radius: var(--radius);
   border: var(--input-border);
   padding: var(--button-pading);
+  flex-grow: 1;
 }
 
 #load-video {
@@ -141,7 +146,7 @@ section {
 aside {
   flex-grow: 1;
   flex-basis: 0px;
-  max-height: 700px;
+  max-height: 600px;
 }
 
 .download-form {
@@ -167,7 +172,7 @@ aside {
 #capture-list {
   padding-right: 10px;
   overflow-y: scroll;
-  max-height: 70%;
+  max-height: 100%;
 }
 
 .capture {
