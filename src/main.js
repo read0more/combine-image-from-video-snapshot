@@ -17,6 +17,17 @@ const getCaptureCount = () => captureList.querySelectorAll(".capture").length;
 const removeCaptureElements = (...elements) =>
   elements.forEach((element) => element.remove());
 
+async function processCapture(captureFunction) {
+  const loadingContainer = document.querySelector(".loading-container");
+  loadingContainer.classList.add("active");
+  const priviousPaused = videoPlayer.paused;
+
+  await captureFunction();
+
+  priviousPaused || videoPlayer.play();
+  loadingContainer.classList.remove("active");
+}
+
 function onLoadVideo() {
   const loadVideo = document.querySelector("#load-video");
   loadVideo.addEventListener("change", () => {
@@ -59,28 +70,31 @@ function onClickCaptureButton() {
       return;
     }
 
-    const captureCount = getCaptureCount() + 1;
-    const captureNumber =
-      captureCount < CAPTURE_LIMIT ? captureCount : CAPTURE_LIMIT;
-    const newCapture = captureTemplate(captureNumber, videoPlayer.currentTime);
-    const priviousPaused = videoPlayer.paused;
+    processCapture(() => {
+      const captureCount = getCaptureCount() + 1;
+      const captureNumber =
+        captureCount < CAPTURE_LIMIT ? captureCount : CAPTURE_LIMIT;
+      const newCapture = captureTemplate(
+        captureNumber,
+        videoPlayer.currentTime
+      );
 
-    captureList.innerHTML = newCapture + captureList.innerHTML;
-    const captureImage = captureList.querySelector(".capture__image");
-    orderActiveCapture(captureCount);
+      captureList.innerHTML = newCapture + captureList.innerHTML;
+      const captureImage = captureList.querySelector(".capture__image");
+      orderActiveCapture(captureCount);
 
-    videoPlayer.pause();
-    context.drawImage(
-      videoPlayer,
-      0,
-      0,
-      captureImage.width,
-      captureImage.height
-    );
+      videoPlayer.pause();
+      context.drawImage(
+        videoPlayer,
+        0,
+        0,
+        captureImage.width,
+        captureImage.height
+      );
 
-    priviousPaused || videoPlayer.play();
-    // innerHTML(이 함수 및 드래그&드랍 함수에서 사용)로 갱신하면 이전에 canvas에서 그린 내용이 사라지므로 dataURL이용
-    captureImage.src = canvas.toDataURL();
+      // innerHTML(이 함수 및 드래그&드랍 함수에서 사용)로 갱신하면 이전에 canvas에서 그린 내용이 사라지므로 dataURL이용
+      captureImage.src = canvas.toDataURL();
+    });
   });
 }
 
@@ -134,7 +148,6 @@ async function combineImages(width, height) {
   const activeCaptureList = captureList.querySelectorAll(".capture.active");
   const resultCanvas = document.createElement("canvas");
   const resultContext = resultCanvas.getContext("2d");
-  const previousTime = videoPlayer.currentTime;
   let currentHeight = 0;
   resultCanvas.width = width;
   resultCanvas.height = height * activeCaptureList.length;
@@ -154,7 +167,6 @@ async function combineImages(width, height) {
     });
   }
 
-  videoPlayer.currentTime = previousTime;
   return resultCanvas.toDataURL();
 }
 
@@ -168,20 +180,23 @@ function submitForm() {
       return;
     }
 
-    const priviousPaused = videoPlayer.paused;
-    const [width, height] = event.target
-      .querySelector(".resolution")
-      .value.split("x");
+    processCapture(async () => {
+      const previousTime = videoPlayer.currentTime;
+      const [width, height] = event.target
+        .querySelector(".resolution")
+        .value.split("x");
 
-    videoPlayer.pause();
-    const dataURL = await combineImages(width, height);
-    downloadResult(dataURL);
+      videoPlayer.pause();
+      const dataURL = await combineImages(width, height);
+      downloadResult(dataURL);
+      videoPlayer.currentTime = previousTime;
 
-    if (event.target.querySelector("input").checked) {
-      removeCaptureElements(...captureList.querySelectorAll(".capture.active"));
-    }
-
-    priviousPaused || videoPlayer.play();
+      if (event.target.querySelector("input").checked) {
+        removeCaptureElements(
+          ...captureList.querySelectorAll(".capture.active")
+        );
+      }
+    });
   });
 }
 
