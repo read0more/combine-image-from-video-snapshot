@@ -239,6 +239,10 @@ aside {
     height: auto;
   }
 
+  section {
+    margin-right: 0;
+  }
+
   .filename {
     width: 100%;
     margin-bottom: 10px;
@@ -263,5 +267,11 @@ aside {
     grid-template-columns: repeat(2, 1fr);
     gap: 5px;
     overflow-y: auto;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  #capture-list {
+    grid-template-columns: repeat(1, 1fr);
   }
 }
