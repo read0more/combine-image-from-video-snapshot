@@ -169,6 +169,7 @@ function downloadResult(dataURL) {
   var a = document.createElement("a");
   a.href = dataURL;
   a.setAttribute("download", "test.png");
+  a.setAttribute("target", "_blank");
   a.click();
 }
 
