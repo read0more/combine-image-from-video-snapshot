@@ -53,12 +53,12 @@ function onLoadVideo() {
   loadVideo.addEventListener("change", () => {
     const loadedVideo = loadVideo.files[0];
     const filenameInput = document.querySelector(".filename");
-    const videoId = document.querySelector("#video-id");
+    const video = document.querySelector("#video-id");
     let filename = loadedVideo.name;
     filename = filename.substring(0, filename.lastIndexOf(".")) || filename;
 
     filenameInput.value = filename;
-    videoId.setAttribute("src", URL.createObjectURL(loadedVideo));
+    video.setAttribute("src", URL.createObjectURL(loadedVideo));
     captureList
       .querySelectorAll(".capture")
       .forEach((capture) => capture.remove());
@@ -168,7 +168,7 @@ function onClickCaptureIcon() {
 function downloadResult(dataURL) {
   var a = document.createElement("a");
   a.href = dataURL;
-  a.setAttribute("download", "test.png");
+  a.setAttribute("download", "result.png");
   a.setAttribute("target", "_blank");
   a.click();
 }
