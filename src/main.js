@@ -20,6 +20,7 @@ const removeCaptureElements = (...elements) =>
   elements.forEach((element) => element.remove());
 
 async function processCapture(captureFunction) {
+  // 캡쳐 하는동안 로딩 화면 표시 및 영상 일시정지
   const loadingContainer = document.querySelector(".loading-container");
   loadingContainer.classList.add("active");
   const priviousPaused = videoPlayer.paused;
@@ -32,6 +33,9 @@ async function processCapture(captureFunction) {
 }
 
 function onChangeCombineCaptureCount() {
+  // 캡쳐 리스트에서 합칠 이미지 개수가 변경 되었을 때의 동작들
+  // 1. min, max값에 대한 검증
+  // 2. combineCaptureCount를 바꾸고 arrangeAside호출
   const captureCount = document.querySelector(".capture__count");
   captureCount.addEventListener("change", ({ target }) => {
     const newValue = Number(target.value);
@@ -49,6 +53,7 @@ function onChangeCombineCaptureCount() {
 }
 
 function onLoadVideo() {
+  // 비디오 로드에 대한 처리. 비디오 태그에 영상 넣고, 캡쳐 버튼 활성화 하고, 기존 캡쳐들 지움
   const loadVideo = document.querySelector("#load-video");
   loadVideo.addEventListener("change", () => {
     const loadedVideo = loadVideo.files[0];
@@ -71,6 +76,7 @@ function onLoadVideo() {
 }
 
 function orderActiveCapture(captureCount) {
+  // 캡쳐 리스트에서 합칠 이미지 개수만큼만 active하게 만듬
   let currentNumber =
     captureCount < combineCaptureCount ? captureCount : combineCaptureCount;
 
@@ -88,6 +94,7 @@ function orderActiveCapture(captureCount) {
 }
 
 function arrangeAside(captureCount) {
+  // 캡쳐 목록 1개 이상이면 다운로드 버튼 활성화
   orderActiveCapture(captureCount);
   if (0 < captureCount) {
     document
@@ -103,6 +110,7 @@ function onClickCaptureButton() {
     }
 
     processCapture(() => {
+      // 오른쪽 캡쳐 리스트에 넣을 템플릿 생성, canvas로 video태그의 화면 캡쳐해서 넣음
       const captureCount = getCaptureCount() + 1;
       const captureNumber =
         captureCount < combineCaptureCount ? captureCount : combineCaptureCount;
@@ -144,6 +152,7 @@ function swapCaptureHTML(captureA, captureB) {
 }
 
 function onClickCaptureIcon() {
+  // 캡쳐리스트 event delegation. item들 위 아래 이동 및 제거에 대한 처리
   captureList.addEventListener("click", ({ target }) => {
     const capture = target.closest(".capture");
     let captureCount = getCaptureCount();
@@ -183,7 +192,7 @@ async function combineImages(width, height) {
   const resultContext = resultCanvas.getContext("2d");
   let currentHeight = 0;
   resultCanvas.width = width;
-  resultCanvas.height = height * activeCaptureList.length;
+  resultCanvas.height = height * activeCaptureList.length; // 미리 합칠 개수 만큼 height 지정
 
   for await (let activeCapture of activeCaptureList) {
     await new Promise((resolve) => {
@@ -196,6 +205,8 @@ async function combineImages(width, height) {
         },
         { once: true }
       );
+
+      // currentTime을 바꿔 seeked 이벤트 발생 시켜가며 이미지들 합쳐나감.
       videoPlayer.currentTime = activeCapture.dataset.capturedTime;
     });
   }
@@ -214,6 +225,7 @@ function submitForm() {
     }
 
     processCapture(async () => {
+      // 캡쳐한것들 합치고 다운로드 하고, 다운로드 후 삭제 체크 했으면 제거
       const previousTime = videoPlayer.currentTime;
       const [width, height] = event.target
         .querySelector(".resolution")
